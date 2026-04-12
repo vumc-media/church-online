@@ -8,7 +8,6 @@
     html, body{
       margin:0;
       padding:0;
-      width:100%;
       background:#000;
       font-family:Arial, Helvetica, sans-serif;
     }
@@ -18,30 +17,28 @@
     }
 
     #vumc-full-wrap{
-  width:100%;
-  min-height:100vh;
-  background:#000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  box-sizing:border-box;
-}
+      width:100%;
+      min-height:100vh;
+      background:#000;
+      padding:24px 16px;
+      box-sizing:border-box;
+    }
 
     #vumc-live-panel{
-  width:100%;
-  max-width:1100px;
-  margin:0 auto;
-  font-family:Arial, Helvetica, sans-serif;
-}
-}
+      width:100%;
+      max-width:1100px;
+      margin:0 auto;
+      font-family:Arial, Helvetica, sans-serif;
     }
 
     #vumc-live-panel .vumc-frame{
-  width:100%;
-  max-width:1100px;
-  margin:0 auto;
-}
+      position:relative;
+      width:100%;
+      aspect-ratio:16 / 9;
+      border-radius:18px;
+      overflow:hidden;
+      color:#fff;
+      background:#000;
     }
 
     #vumc-live-panel .vumc-player{
@@ -237,7 +234,6 @@
       }
 
       #vumc-live-panel .vumc-frame{
-        aspect-ratio:16 / 9;
         border-radius:14px;
       }
 
