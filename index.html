@@ -14,14 +14,12 @@ html, body{
   font-family:Arial, Helvetica, sans-serif;
 }
 
-/* CENTER EVERYTHING */
 body{
   display:flex;
   align-items:center;
   justify-content:center;
 }
 
-/* CONTAINER */
 #vumcWrap{
   width:100%;
   max-width:960px;
@@ -29,7 +27,6 @@ body{
   box-sizing:border-box;
 }
 
-/* PLAYER FRAME */
 #vumcFrame{
   position:relative;
   width:100%;
@@ -39,7 +36,6 @@ body{
   background:#000;
 }
 
-/* YOUTUBE */
 #vumcLiveFrame{
   position:absolute;
   inset:0;
@@ -49,7 +45,6 @@ body{
   display:none;
 }
 
-/* OFFLINE PANEL */
 #vumcOffline{
   position:absolute;
   inset:0;
@@ -65,7 +60,6 @@ body{
     url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVeu24CGoxKiGKIMqt16SMry2rYHrAFStWTA&s') center/cover no-repeat;
 }
 
-/* CONTENT */
 #vumcInner{
   max-width:700px;
   width:100%;
@@ -77,7 +71,6 @@ body{
   margin-bottom:18px;
 }
 
-/* COUNTDOWN */
 #vumcCountdown{
   display:flex;
   justify-content:center;
@@ -102,13 +95,11 @@ body{
   text-transform:uppercase;
 }
 
-/* TIMES */
 .vumcTimes{
   margin-bottom:14px;
   font-size:clamp(14px,2vw,18px);
 }
 
-/* BUTTON */
 #vumcBtn{
   display:inline-block;
   background:#d4af37;
@@ -120,7 +111,6 @@ body{
   margin-bottom:12px;
 }
 
-/* MOBILE SWITCH */
 .vumc-desktop{ display:block; }
 .vumc-mobile{ display:none; }
 
@@ -140,16 +130,13 @@ body{
 <div id="vumcWrap">
   <div id="vumcFrame">
 
-    <!-- PLAYER -->
     <iframe id="vumcLiveFrame"></iframe>
 
-    <!-- OFFLINE -->
     <div id="vumcOffline">
       <div id="vumcInner">
 
         <div id="vumcTitle">Next Service Begins In</div>
 
-        <!-- DESKTOP COUNTDOWN -->
         <div id="vumcCountdown" class="vumc-desktop">
           <div>
             <div id="d" class="vumcBox">00</div>
@@ -169,19 +156,17 @@ body{
           </div>
         </div>
 
-        <!-- MOBILE SCHEDULE -->
         <div class="vumc-mobile vumcTimes">
           Traditional Worship — 9:30am<br>
           Contemporary Worship — 10:30am
         </div>
 
-        <!-- DESKTOP TIMES -->
         <div class="vumcTimes vumc-desktop">
           Traditional Worship — 9:30am<br>
           Contemporary Worship — 10:30am
         </div>
 
-        <a id="vumcBtn" href="https://www.versaillesumc.org/plan-your-visit" target="_blank">
+        <a id="vumcBtn" href="https://www.versaillesumc.org/plan-your-visit" target="_blank" rel="noopener">
           PLAN YOUR VISIT
         </a>
 
@@ -198,38 +183,47 @@ body{
 <script>
 (async function () {
 
-const endpoint = "PASTE_YOUR_GOOGLE_SCRIPT_URL";
+const endpoint = "https://script.google.com/macros/s/AKfycbxClNiX6jIT7ykEIox3Qw-dzynO4TgGhqbdTTzOzESS9C8ZxCRNiLLAuc3bSYFKVbg/exec";
 
 const frame = document.getElementById("vumcLiveFrame");
 const offline = document.getElementById("vumcOffline");
 
 let currentVideo = "";
 
-/* COUNTDOWN */
-function nextSunday(){
+function getNextServiceDate(){
   const now = new Date();
-  const d = now.getDay();
-  const diff = (7 - d) || 7;
+  const day = now.getDay();
 
-  const next = new Date(now);
-  next.setDate(now.getDate()+diff);
-  next.setHours(9,30,0,0);
+  const traditional = new Date(now);
+  traditional.setHours(9,30,0,0);
 
-  return next;
+  const contemporary = new Date(now);
+  contemporary.setHours(10,30,0,0);
+
+  if(day === 0){
+    if(now < traditional) return traditional;
+    if(now < contemporary) return contemporary;
+  }
+
+  const nextSunday = new Date(now);
+  const daysUntilSunday = ((7 - day) % 7) || 7;
+  nextSunday.setDate(now.getDate() + daysUntilSunday);
+  nextSunday.setHours(9,30,0,0);
+  return nextSunday;
 }
 
 function tick(){
   const now = new Date();
-  const target = nextSunday();
-  let diff = Math.floor((target - now)/1000);
+  const target = getNextServiceDate();
+  let diff = Math.floor((target - now) / 1000);
 
   if(diff < 0) diff = 0;
 
-  const d = Math.floor(diff/86400);
+  const d = Math.floor(diff / 86400);
   diff %= 86400;
-  const h = Math.floor(diff/3600);
+  const h = Math.floor(diff / 3600);
   diff %= 3600;
-  const m = Math.floor(diff/60);
+  const m = Math.floor(diff / 60);
   const s = diff % 60;
 
   document.getElementById("d").textContent = String(d).padStart(2,"0");
@@ -238,38 +232,45 @@ function tick(){
   document.getElementById("s").textContent = String(s).padStart(2,"0");
 }
 
-/* LIVE CHECK */
 async function checkLive(){
   try{
-    const res = await fetch(endpoint + "?t=" + Date.now());
+    const res = await fetch(endpoint + "?t=" + Date.now(), {
+      method: "GET",
+      cache: "no-store"
+    });
+
+    if(!res.ok) throw new Error("HTTP " + res.status);
+
     const data = await res.json();
 
-    if(data.ok && data.live){
+    if(data && data.ok && data.live && data.videoId){
       if(currentVideo !== data.videoId){
         currentVideo = data.videoId;
-        frame.src = "https://www.youtube.com/embed/" + data.videoId + "?autoplay=1&mute=1";
+        frame.src = "https://www.youtube.com/embed/" + data.videoId + "?autoplay=1&mute=1&rel=0";
       }
 
       frame.style.display = "block";
       offline.style.display = "none";
-
     } else {
       currentVideo = "";
+      frame.src = "";
       frame.style.display = "none";
       offline.style.display = "flex";
     }
 
-  }catch(e){
+  } catch(e){
+    currentVideo = "";
+    frame.src = "";
     frame.style.display = "none";
     offline.style.display = "flex";
   }
 }
 
 tick();
-setInterval(tick,1000);
+setInterval(tick, 1000);
 
 await checkLive();
-setInterval(checkLive,30000);
+setInterval(checkLive, 30000);
 
 })();
 </script>
