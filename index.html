@@ -30,7 +30,7 @@
 
   #vumcShell {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 380px;
+    grid-template-columns: minmax(0, 1fr) 420px;
     min-height: 100vh;
   }
 
@@ -176,7 +176,7 @@
   }
 
   #vumcNotesCard {
-    min-height: 720px;
+    min-height: 560px;
     display: flex;
     align-items: stretch;
     justify-content: center;
@@ -185,8 +185,7 @@
 
   #vumcNotesFrame {
     width: 100%;
-    height: 100vh;
-    min-height: 720px;
+    height: 560px;
     border: 0;
     background: #fff;
     display: none;
@@ -194,7 +193,7 @@
 
   #vumcNotesPlaceholder {
     width: 100%;
-    min-height: 720px;
+    min-height: 560px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -222,6 +221,138 @@
     font-size: 15px;
     line-height: 1.6;
     opacity: .92;
+  }
+
+  .vumcTabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .vumcTabBtn {
+    flex: 1;
+    border: 1px solid rgba(255,255,255,.08);
+    background: #262a33;
+    color: #fff;
+    padding: 12px 10px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .vumcTabBtn.active {
+    background: #d4af37;
+    color: #111;
+    border-color: transparent;
+  }
+
+  .vumcTabPane {
+    display: none;
+  }
+
+  .vumcTabPane.active {
+    display: block;
+  }
+
+  .vumcFormCard {
+    background: #262a33;
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: 16px;
+    padding: 16px;
+  }
+
+  .vumcField {
+    margin-bottom: 12px;
+  }
+
+  .vumcField label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #fff;
+  }
+
+  .vumcInput,
+  .vumcSelect,
+  .vumcTextarea {
+    width: 100%;
+    border: 1px solid rgba(255,255,255,.12);
+    background: #1d2129;
+    color: #fff;
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 14px;
+    font-family: inherit;
+  }
+
+  .vumcTextarea {
+    min-height: 130px;
+    resize: vertical;
+  }
+
+  .vumcCheckboxRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: 14px;
+  }
+
+  .vumcCheckboxRow input {
+    transform: scale(1.1);
+  }
+
+  .vumcSubmitBtn {
+    width: 100%;
+    border: 0;
+    background: #d4af37;
+    color: #111;
+    padding: 13px 14px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .vumcSubmitBtn:disabled {
+    opacity: .65;
+    cursor: not-allowed;
+  }
+
+  .vumcHelp {
+    font-size: 12px;
+    line-height: 1.5;
+    opacity: .8;
+    margin-top: 10px;
+  }
+
+  .vumcStatus {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    display: none;
+  }
+
+  .vumcStatus.success {
+    display: block;
+    background: rgba(50, 140, 90, .18);
+    border: 1px solid rgba(50, 140, 90, .35);
+    color: #dff7e8;
+  }
+
+  .vumcStatus.error {
+    display: block;
+    background: rgba(170, 70, 70, .18);
+    border: 1px solid rgba(170, 70, 70, .35);
+    color: #ffe6e6;
+  }
+
+  .vumcHidden {
+    display: none !important;
   }
 
   @media (max-width: 980px) {
@@ -323,26 +454,123 @@
     <aside id="vumcSidebar">
       <div id="vumcSidebarInner">
 
-        <div id="vumcNotesPanel" class="vumcPanel">
-          <div class="vumcPanelTitle">Sermon Notes</div>
-          <div class="vumcCard" id="vumcNotesCard">
+        <div class="vumcPanel">
+          <div class="vumcTabs">
+            <button class="vumcTabBtn active" data-tab="notes">Sermon Notes</button>
+            <button class="vumcTabBtn" data-tab="checkin">Check In</button>
+            <button class="vumcTabBtn" data-tab="prayer">Prayer</button>
+          </div>
+        </div>
 
-            <div id="vumcNotesPlaceholder">
-              <div class="vumcPlaceholderInner">
-                <div class="vumcPlaceholderTitle">Sermon Notes</div>
-                <div class="vumcPlaceholderText">
-                  Sermon notes will appear here when the livestream is active.<br><br>
-                  Join us live Sundays at 9:30am or 10:30am.
+        <div id="tab-notes" class="vumcTabPane active">
+          <div class="vumcPanel">
+            <div class="vumcPanelTitle">Sermon Notes</div>
+            <div class="vumcCard" id="vumcNotesCard">
+
+              <div id="vumcNotesPlaceholder">
+                <div class="vumcPlaceholderInner">
+                  <div class="vumcPlaceholderTitle">Sermon Notes</div>
+                  <div class="vumcPlaceholderText">
+                    Sermon notes will appear here when the livestream is active.<br><br>
+                    Join us live Sundays at 9:30am or 10:30am.
+                  </div>
                 </div>
               </div>
+
+              <iframe
+                id="vumcNotesFrame"
+                src=""
+                title="Sermon Notes">
+              </iframe>
+
             </div>
+          </div>
+        </div>
 
-            <iframe
-              id="vumcNotesFrame"
-              src=""
-              title="Sermon Notes">
-            </iframe>
+        <div id="tab-checkin" class="vumcTabPane">
+          <div class="vumcPanel">
+            <div class="vumcPanelTitle">Check In</div>
+            <div class="vumcFormCard">
+              <form id="checkinForm">
+                <div class="vumcField">
+                  <label for="checkinName">Name</label>
+                  <input id="checkinName" name="name" class="vumcInput" type="text" required />
+                </div>
 
+                <div class="vumcField">
+                  <label for="checkinEmail">Email</label>
+                  <input id="checkinEmail" name="email" class="vumcInput" type="email" />
+                </div>
+
+                <div class="vumcField">
+                  <label for="checkinService">Service Attended</label>
+                  <select id="checkinService" name="service" class="vumcSelect" required>
+                    <option value="">Select a service</option>
+                    <option value="Traditional Worship — 9:30 AM">Traditional Worship — 9:30 AM</option>
+                    <option value="Contemporary Worship — 10:30 AM">Contemporary Worship — 10:30 AM</option>
+                  </select>
+                </div>
+
+                <div class="vumcCheckboxRow">
+                  <input id="checkinFirstTime" name="firstTime" type="checkbox" />
+                  <label for="checkinFirstTime" style="margin:0;">I’m a first-time guest</label>
+                </div>
+
+                <input type="text" name="website" class="vumcHidden" tabindex="-1" autocomplete="off" />
+
+                <button id="checkinSubmit" class="vumcSubmitBtn" type="submit">Submit Check In</button>
+
+                <div class="vumcHelp">
+                  Check-ins are sent to the church office for attendance and follow-up.
+                </div>
+
+                <div id="checkinStatus" class="vumcStatus"></div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div id="tab-prayer" class="vumcTabPane">
+          <div class="vumcPanel">
+            <div class="vumcPanelTitle">Prayer Request</div>
+            <div class="vumcFormCard">
+              <form id="prayerForm">
+                <div class="vumcField">
+                  <label for="prayerName">Name</label>
+                  <input id="prayerName" name="name" class="vumcInput" type="text" />
+                </div>
+
+                <div class="vumcField">
+                  <label for="prayerContact">Email or Phone</label>
+                  <input id="prayerContact" name="contact" class="vumcInput" type="text" />
+                </div>
+
+                <div class="vumcField">
+                  <label for="prayerRequest">Prayer Request</label>
+                  <textarea id="prayerRequest" name="request" class="vumcTextarea" required></textarea>
+                </div>
+
+                <div class="vumcCheckboxRow">
+                  <input id="prayerPrivate" name="privateOnly" type="checkbox" />
+                  <label for="prayerPrivate" style="margin:0;">Keep this private</label>
+                </div>
+
+                <div class="vumcCheckboxRow">
+                  <input id="prayerFollowUp" name="followUp" type="checkbox" />
+                  <label for="prayerFollowUp" style="margin:0;">I would like follow-up</label>
+                </div>
+
+                <input type="text" name="website" class="vumcHidden" tabindex="-1" autocomplete="off" />
+
+                <button id="prayerSubmit" class="vumcSubmitBtn" type="submit">Submit Prayer Request</button>
+
+                <div class="vumcHelp">
+                  Prayer requests are sent to the lead pastor.
+                </div>
+
+                <div id="prayerStatus" class="vumcStatus"></div>
+              </form>
+            </div>
           </div>
         </div>
 
@@ -356,6 +584,7 @@
 (async function () {
 
   const endpoint = "https://script.google.com/macros/s/AKfycbxClNiX6jIT7ykEIox3Qw-dzynO4TgGhqbdTTzOzESS9C8ZxCRNiLLAuc3bSYFKVbg/exec";
+  const formsEndpoint = "PASTE_YOUR_FORMS_APPS_SCRIPT_WEB_APP_URL_HERE";
 
   const frame = document.getElementById("vumcLiveFrame");
   const offline = document.getElementById("vumcOffline");
@@ -484,6 +713,129 @@
       hideNotes();
     }
   }
+
+  function setStatus(el, type, message) {
+    el.className = "vumcStatus " + type;
+    el.textContent = message;
+  }
+
+  function clearStatus(el) {
+    el.className = "vumcStatus";
+    el.textContent = "";
+  }
+
+  async function postForm(payload) {
+    const res = await fetch(formsEndpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+      throw new Error("Request failed: " + res.status);
+    }
+
+    return await res.json();
+  }
+
+  // Tabs
+  document.querySelectorAll(".vumcTabBtn").forEach(btn => {
+    btn.addEventListener("click", function () {
+      document.querySelectorAll(".vumcTabBtn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".vumcTabPane").forEach(p => p.classList.remove("active"));
+      this.classList.add("active");
+      document.getElementById("tab-" + this.dataset.tab).classList.add("active");
+    });
+  });
+
+  // Check-in
+  const checkinForm = document.getElementById("checkinForm");
+  const checkinSubmit = document.getElementById("checkinSubmit");
+  const checkinStatus = document.getElementById("checkinStatus");
+
+  checkinForm.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    clearStatus(checkinStatus);
+
+    const payload = {
+      type: "checkin",
+      name: checkinForm.name.value.trim(),
+      email: checkinForm.email.value.trim(),
+      service: checkinForm.service.value,
+      firstTime: checkinForm.firstTime.checked,
+      website: checkinForm.website.value.trim(),
+      source: "Watch Live Page"
+    };
+
+    if (!payload.name || !payload.service) {
+      setStatus(checkinStatus, "error", "Please complete the required fields.");
+      return;
+    }
+
+    checkinSubmit.disabled = true;
+    checkinSubmit.textContent = "Submitting...";
+
+    try {
+      const result = await postForm(payload);
+      if (result && result.ok) {
+        checkinForm.reset();
+        setStatus(checkinStatus, "success", "Thanks for checking in. We’re glad you worshiped with us today.");
+      } else {
+        throw new Error((result && result.error) || "Unknown error");
+      }
+    } catch (err) {
+      setStatus(checkinStatus, "error", "Your check-in could not be submitted right now. Please try again.");
+    } finally {
+      checkinSubmit.disabled = false;
+      checkinSubmit.textContent = "Submit Check In";
+    }
+  });
+
+  // Prayer
+  const prayerForm = document.getElementById("prayerForm");
+  const prayerSubmit = document.getElementById("prayerSubmit");
+  const prayerStatus = document.getElementById("prayerStatus");
+
+  prayerForm.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    clearStatus(prayerStatus);
+
+    const payload = {
+      type: "prayer",
+      name: prayerForm.name.value.trim(),
+      contact: prayerForm.contact.value.trim(),
+      request: prayerForm.request.value.trim(),
+      privateOnly: prayerForm.privateOnly.checked,
+      followUp: prayerForm.followUp.checked,
+      website: prayerForm.website.value.trim(),
+      source: "Watch Live Page"
+    };
+
+    if (!payload.request) {
+      setStatus(prayerStatus, "error", "Please enter your prayer request.");
+      return;
+    }
+
+    prayerSubmit.disabled = true;
+    prayerSubmit.textContent = "Submitting...";
+
+    try {
+      const result = await postForm(payload);
+      if (result && result.ok) {
+        prayerForm.reset();
+        setStatus(prayerStatus, "success", "Your prayer request has been submitted.");
+      } else {
+        throw new Error((result && result.error) || "Unknown error");
+      }
+    } catch (err) {
+      setStatus(prayerStatus, "error", "Your prayer request could not be submitted right now. Please try again.");
+    } finally {
+      prayerSubmit.disabled = false;
+      prayerSubmit.textContent = "Submit Prayer Request";
+    }
+  });
 
   tick();
   setInterval(tick, 1000);
